@@ -1,0 +1,20 @@
+# Spring Boot
+**/target/
+**/.idea/
+**/*.iml
+*.log
+
+# React
+**/node_modules/
+**/dist/
+
+# Secrets
+**/.env
+**/.env.local
+
+# Editors
+.vscode/
+
+# Windows
+Thumbs.db
+.DS_Store

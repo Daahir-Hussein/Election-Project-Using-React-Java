@@ -1,0 +1,49 @@
+services:
+  postgres:
+    container_name: election_postgres
+    image: postgres:16
+    restart: unless-stopped
+
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: ElectionDB
+
+    ports:
+      - "5432:5432"
+
+    volumes:
+      - election_postgres_data:/var/lib/postgresql/data
+
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "pg_isready -U postgres -d ElectionDB"
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  pgadmin:
+    container_name: election_pgadmin
+    image: dpage/pgadmin4:latest
+    restart: unless-stopped
+
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@election.com
+      PGADMIN_DEFAULT_PASSWORD: admin123
+
+    ports:
+      - "5050:80"
+
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+    volumes:
+      - election_pgadmin_data:/var/lib/pgadmin
+
+volumes:
+  election_postgres_data:
+  election_pgadmin_data:
